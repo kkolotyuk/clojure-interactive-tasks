@@ -11,8 +11,15 @@
 ;;; In this task snake is not growing from eating apples so there is no danger of snake hitting itself.
 ;;; Note: upper left corner cell is (0, 0).
 
-;;; Uncomment and substitute your solution
-; (run-not-grow YOUR_SOLUTION_HERE)
+(defn new-direction [[sx sy :as snake] [ax ay :as apple]]
+  (cond
+    (< sx ax) :right
+    (> sx ax) :left
+    (< sy ay) :down
+    (> sy ay) :up
+    :else :right))
+
+(run-not-grow new-direction)
 
 
 
