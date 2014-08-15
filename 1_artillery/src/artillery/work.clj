@@ -15,7 +15,7 @@
 ;;; It always returns PI/2 (missile is launched straight up).
 ;;; You can either calculate answer or find it by trying and adjusting different angles.
 (defn plane-static-solution []
-  (* 0.5 Math/PI))
+  (* 0.58 Math/PI))
 
 ;;; Here's a function that will show an  animation with plane flying and you launching missiles.
 ;;; You need to pass your solution (function name) to this function.
@@ -37,7 +37,7 @@
   (Math/atan2 (- trg-y pl-y) (- trg-x pl-x)))
 
 ;;; To run program uncomment function and run it.
-; (plane-dynamic plane-dynamic-solution)
+(plane-dynamic plane-dynamic-solution)
 
 
 
