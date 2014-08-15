@@ -1,5 +1,5 @@
 (ns snake.work
-  (:require [snake.core :refer (run-not-grow run-grow run-many-apples run-with-walls)]))
+  (:require [snake.core :refer (run-not-grow run-grow run-many-apples run-with-walls neib-cell dirs)]))
 
 ;;; You're writing a bot for playing snake.
 ;;; So, you are a snake and your goal is to collect apples.
@@ -11,7 +11,7 @@
 ;;; In this task snake is not growing from eating apples so there is no danger of snake hitting itself.
 ;;; Note: upper left corner cell is (0, 0).
 
-(defn new-direction [[sx sy :as snake] [ax ay :as apple]]
+(defn not-grow-new-direction [[sx sy :as snake] [ax ay :as apple]]
   (cond
     (< sx ax) :right
     (> sx ax) :left
@@ -19,7 +19,7 @@
     (> sy ay) :up
     :else :right))
 
-(run-not-grow new-direction)
+(run-not-grow not-grow-new-direction)
 
 
 
@@ -32,8 +32,26 @@
 ;;; Note that you cannot change direction to the opposite in 1 move: snake will hit it's tail if length is 2 or more.
 ;;; Well, you can change direction but snake will die :\
 
-;;; Uncomment and substitute your solution
-; (run-grow YOUR_SOLUTION_HERE)
+
+(defn safe? [dir [[hx hy :as head] & rst]]
+  (let [next-head (neib-cell head dir)]
+    (not (some #{next-head} rst))))
+
+(safe? :up [[2 1] [2 0]])
+
+(defn growing-new-direction [[[hx hy] & rst :as snake] [ax ay :as apple]]
+  (cond
+   (and (safe? :right snake) (< hx ax)) :right
+   (and (safe? :left snake) (> hx ax)) :left
+   (and (safe? :down snake) (< hy ay)) :down
+   (and (safe? :up snake) (> hy ay)) :up
+   (safe? :right snake) :right
+   (safe? :left snake) :left
+   (safe? :down snake) :down
+   (safe? :up snake) :up
+   :else :right))
+
+(run-grow growing-new-direction)
 
 
 
