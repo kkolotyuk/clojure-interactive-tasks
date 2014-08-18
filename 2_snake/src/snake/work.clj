@@ -57,8 +57,16 @@
 ;;; Function the same as previous but it takes set of apples instead of the single apple.
 ;;; Each apple in the set is a vector of x and y.
 
-;;; Uncomment and substitute your solution
-; (run-many-apples YOUR_SOLUTION_HERE)
+(defn distance [[x1 y1] [x2 y2]]
+  (+ (Math/abs (- x1 x2)) (Math/abs (- y1 y2))))
+
+(defn closest [point points]
+  (apply min-key (partial distance point) points))
+
+(defn many-apples-new-direction [[head & _ :as snake] apples]
+  (growing-new-direction snake (closest head apples)))
+
+(run-many-apples many-apples-new-direction)
 
 
 
