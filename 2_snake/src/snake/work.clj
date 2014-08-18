@@ -37,8 +37,6 @@
   (let [next-head (neib-cell head dir)]
     (not (some #{next-head} rst))))
 
-(safe? :up [[2 1] [2 0]])
-
 (defn growing-new-direction [[[hx hy] & rst :as snake] [ax ay :as apple]]
   (cond
    (and (safe? :right snake) (< hx ax)) :right
