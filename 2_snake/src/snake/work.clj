@@ -33,20 +33,20 @@
 ;;; Well, you can change direction but snake will die :\
 
 
-(defn safe? [dir [[hx hy :as head] & rst]]
+(defn safe? [dir head dangers]
   (let [next-head (neib-cell head dir)]
-    (not (some #{next-head} rst))))
+    (not (some #{next-head} dangers))))
 
-(defn growing-new-direction [[[hx hy] & rst :as snake] [ax ay :as apple]]
+(defn growing-new-direction [[[hx hy :as head] & rst] [ax ay :as apple]]
   (cond
-   (and (safe? :right snake) (< hx ax)) :right
-   (and (safe? :left snake) (> hx ax)) :left
-   (and (safe? :down snake) (< hy ay)) :down
-   (and (safe? :up snake) (> hy ay)) :up
-   (safe? :right snake) :right
-   (safe? :left snake) :left
-   (safe? :down snake) :down
-   (safe? :up snake) :up
+   (and (safe? :right head rst) (< hx ax)) :right
+   (and (safe? :left head rst) (> hx ax)) :left
+   (and (safe? :down head rst) (< hy ay)) :down
+   (and (safe? :up head rst) (> hy ay)) :up
+   (safe? :right head rst) :right
+   (safe? :left head rst) :left
+   (safe? :down head rst) :down
+   (safe? :up head rst) :up
    :else :right))
 
 (run-grow growing-new-direction)
@@ -75,5 +75,6 @@
 ;;; Each wall is a cell that snake is not allowed to bump to.
 ;;; Wall is a vector of x and y.
 
-;;; Uncomment and substitute your solution
-; (run-with-walls YOUR_SOLUTION_HERE)
+(defn walls-new-direction [snake apples walls]
+  (many-apples-new-direction (concat snake walls) apples))
+(run-with-walls walls-new-direction)
